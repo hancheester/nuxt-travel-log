@@ -35,3 +35,7 @@ Locally preview production build:
 # npm
 npm run preview
 ```
+
+## Bookmark
+
+https://www.youtube.com/watch?v=DK93dqmJJYg&t=1368s
