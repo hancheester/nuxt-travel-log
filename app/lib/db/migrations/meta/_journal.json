@@ -8,6 +8,13 @@
       "when": 1769296506148,
       "tag": "0000_equal_praxagora",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1769371483146,
+      "tag": "0001_glamorous_deadpool",
+      "breakpoints": true
     }
   ]
 }
