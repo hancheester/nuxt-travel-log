@@ -1,3 +1,5 @@
+import type { User } from "better-auth";
+
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { createAuthMiddleware } from "better-auth/api";
@@ -5,6 +7,10 @@ import { createAuthMiddleware } from "better-auth/api";
 import env from "~/lib/env";
 
 import db from "./db/index"; // your drizzle instance
+
+export type UserWithId = Omit<User, "id"> & {
+  id: number;
+};
 
 export const auth = betterAuth({
   hooks: {
