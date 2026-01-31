@@ -15,6 +15,13 @@
       "when": 1769371483146,
       "tag": "0001_glamorous_deadpool",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1769816941780,
+      "tag": "0002_slippery_skaar",
+      "breakpoints": true
     }
   ]
 }
