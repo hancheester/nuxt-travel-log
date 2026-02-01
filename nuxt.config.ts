@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@vee-validate/nuxt",
     "nuxt-csurf",
+    "nuxt-maplibre",
   ],
   eslint: {
     config: {
@@ -22,8 +23,13 @@ export default defineNuxtConfig({
   },
   vite: {
     plugins: [
-      tailwindcss() as any,
+      tailwindcss(),
     ],
+    optimizeDeps: {
+      include: [
+        "maplibre-gl",
+      ],
+    },
   },
   colorMode: {
     dataValue: "theme",
