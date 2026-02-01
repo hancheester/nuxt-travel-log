@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@indoorequal/vue-maplibre-gl':
+        specifier: ^8.4.2
+        version: 8.4.2(maplibre-gl@5.17.0)(vue@3.5.27(typescript@5.9.3))
       '@libsql/client':
         specifier: ^0.17.0
         version: 0.17.0
