@@ -1,12 +1,7 @@
 import type { SelectLocationWithLogs } from "~/lib/db/schema";
 import type { MapPoint } from "~/lib/types";
 
-const listLocationsInSidebar = new Set(["dashboard", "dashboard-add"]);
-const listCurrentLocationInSidebar = new Set([
-  "dashboard-location-slug",
-  "dashboard-location-slug-edit",
-  "dashboard-location-slug-add",
-]);
+import { CURRENT_LOCATION_PAGES, LOCATION_PAGES } from "~/lib/constants";
 
 export const useLocationStore = defineStore("useLocationStore", () => {
   const route = useRoute();
@@ -19,25 +14,36 @@ export const useLocationStore = defineStore("useLocationStore", () => {
     lazy: true,
   });
 
-  const locationUrlWithSlug = computed(() => `/api/locations/${route.params.slug}`);
+  const locationUrlWithSlug = computed(() => {
+    const slug = route.params.slug;
+    // Return null/undefined to prevent fetch when slug isn't ready
+    return slug ? `/api/locations/${slug}` : null;
+  });
 
   const {
     data: currentLocation,
     status: currentLocationStatus,
     error: currentLocationError,
     refresh: refreshCurrentLocation,
-  } = useFetch<SelectLocationWithLogs>(locationUrlWithSlug, {
+  } = useFetch<SelectLocationWithLogs>(() => locationUrlWithSlug.value!, {
     lazy: true,
     immediate: false,
-    watch: [locationUrlWithSlug],
+    watch: false,
   });
+
+  // Watch for valid slug changes and fetch
+  watch(locationUrlWithSlug, async (newUrl) => {
+    if (newUrl) {
+      await refreshCurrentLocation();
+    }
+  }, { immediate: true });
 
   const sidebarStore = useSidebarStore();
   const mapStore = useMapStore();
 
   // effect() can be run on the server
   effect(() => {
-    if (locations.value && listLocationsInSidebar.has(route.name?.toString() || "")) {
+    if (locations.value && LOCATION_PAGES.has(route.name?.toString() || "")) {
       const mapPoints: MapPoint[] = [];
       const sidebarItems: SidebarItem[] = [];
 
@@ -56,7 +62,7 @@ export const useLocationStore = defineStore("useLocationStore", () => {
       sidebarStore.sidebarItems = sidebarItems;
       mapStore.mapPoints = mapPoints;
     }
-    else if (currentLocation.value && listCurrentLocationInSidebar.has(route.name?.toString() || "")) {
+    else if (currentLocation.value && CURRENT_LOCATION_PAGES.has(route.name?.toString() || "")) {
       sidebarStore.sidebarItems = [];
       mapStore.mapPoints = [currentLocation.value];
     }
