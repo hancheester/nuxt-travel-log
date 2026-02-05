@@ -34,70 +34,72 @@ onMounted(() => {
 </script>
 
 <template>
-  <MglMap
-    :map-style="style"
-    :center="center"
-    :zoom="zoom"
-    @map:dblclick="onDoubleClick"
-  >
-    <MglNavigationControl />
-    <MglMarker
-      v-if="mapStore.addedPoint"
-      draggable
-      class-name="z-50"
-      :coordinates="[mapStore.addedPoint.long, mapStore.addedPoint.lat]"
-      @update:coordinates="updateAddedPoint"
+  <div class="flex-1">
+    <MglMap
+      :map-style="style"
+      :center="center"
+      :zoom="zoom"
+      @map:dblclick="onDoubleClick"
     >
-      <template #marker>
-        <div
-          class="tooltip tooltip-top tooltip-open hover:cursor-pointer"
-          data-tip="Drag to your desired location"
-        >
-          <Icon
-            name="tabler:map-pin-filled"
-            size="35"
-            class="text-warning"
-          />
-        </div>
-      </template>
-    </MglMarker>
-    <MglMarker
-      v-for="point in mapStore.mapPoints"
-      :key="point.id"
-      :coordinates="[point.long, point.lat]"
-    >
-      <template #marker>
-        <div
-          class="tooltip tooltip-top hover:cursor-pointer"
-          :data-tip="point.name"
-          :class="{ 'tooltip-open': isPointSelected(point, mapStore.selectedPoint) }"
-          @mouseenter="mapStore.selectedPoint = point"
-          @mouseleave="mapStore.selectedPoint = null"
-        >
-          <Icon
-            name="tabler:map-pin-filled"
-            size="30"
-            :class="isPointSelected(point, mapStore.selectedPoint) ? 'text-accent' : 'text-secondary'"
-          />
-        </div>
-      </template>
-      <MglPopup>
-        <h3 class="text-2xl">
-          {{ point.name }}
-        </h3>
-        <p v-if="point.description">
-          {{ point.description }}
-        </p>
-        <div class="flex justify-end mt-4">
-          <NuxtLink
-            v-if="point.to"
-            :to="point.to"
-            class="btn btn-sm btn-outline"
+      <MglNavigationControl />
+      <MglMarker
+        v-if="mapStore.addedPoint"
+        draggable
+        class-name="z-50"
+        :coordinates="[mapStore.addedPoint.long, mapStore.addedPoint.lat]"
+        @update:coordinates="updateAddedPoint"
+      >
+        <template #marker>
+          <div
+            class="tooltip tooltip-top tooltip-open hover:cursor-pointer"
+            data-tip="Drag to your desired location"
           >
-            {{ point.toLabel }}
-          </NuxtLink>
-        </div>
-      </MglPopup>
-    </MglMarker>
-  </MglMap>
+            <Icon
+              name="tabler:map-pin-filled"
+              size="35"
+              class="text-warning"
+            />
+          </div>
+        </template>
+      </MglMarker>
+      <MglMarker
+        v-for="point in mapStore.mapPoints"
+        :key="point.id"
+        :coordinates="[point.long, point.lat]"
+      >
+        <template #marker>
+          <div
+            class="tooltip tooltip-top hover:cursor-pointer"
+            :data-tip="point.name"
+            :class="{ 'tooltip-open': isPointSelected(point, mapStore.selectedPoint) }"
+            @mouseenter="mapStore.selectedPoint = point"
+            @mouseleave="mapStore.selectedPoint = null"
+          >
+            <Icon
+              name="tabler:map-pin-filled"
+              size="30"
+              :class="isPointSelected(point, mapStore.selectedPoint) ? 'text-accent' : 'text-secondary'"
+            />
+          </div>
+        </template>
+        <MglPopup>
+          <h3 class="text-2xl">
+            {{ point.name }}
+          </h3>
+          <p v-if="point.description">
+            {{ point.description }}
+          </p>
+          <div class="flex justify-end mt-4">
+            <NuxtLink
+              v-if="point.to"
+              :to="point.to"
+              class="btn btn-sm btn-outline"
+            >
+              {{ point.toLabel }}
+            </NuxtLink>
+          </div>
+        </MglPopup>
+      </MglMarker>
+    </MglMap>
+  </div>
 </template>
