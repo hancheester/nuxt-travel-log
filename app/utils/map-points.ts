@@ -10,9 +10,10 @@ export function createMapPointFromLocation(location: SelectLocation): MapPoint {
 }
 
 export function createMapPointFromLocationLog(locationLog: SelectLocationLog): MapPoint {
+  const route = useRoute();
   return {
     ...locationLog,
-    to: { name: "dashboard-location-slug-id", params: { id: locationLog.id } },
+    to: { name: "dashboard-location-slug-id", params: { slug: route.params.slug, id: locationLog.id } },
     toLabel: "View",
   };
 }

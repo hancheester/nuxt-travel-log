@@ -30,7 +30,7 @@ const route = useRoute();
         :class="iconColor"
       />
       <Transition name="gro">
-        <span v-if="showLabel">
+        <span v-if="showLabel" class="truncate">
           {{ label }}
         </span>
       </Transition>
